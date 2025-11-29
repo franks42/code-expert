@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Expert - Call Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-top: 0;
+            color: #333;
+        }
+        #graph {
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Codebase Call Graph</h1>
+        <div class="controls">
+            <input type="text" id="ns-filter" placeholder="Filter by namespace (e.g. http-core)" />
+            <button onclick="applyFilter()">Filter</button>
+            <button onclick="clearFilter()">Clear</button>
+        </div>
+        <div class="mermaid" id="graph">LOADING_GRAPH</div>
+    </div>
+    <script>
+        // Initialize filter input from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const ns = urlParams.get('ns');
+        if (ns) {
+            document.getElementById('ns-filter').value = ns;
+        }
+
+        function applyFilter() {
+            const val = document.getElementById('ns-filter').value;
+            if (val) {
+                window.location.href = "/?ns=" + encodeURIComponent(val);
+            } else {
+                window.location.href = "/";
+            }
+        }
+
+        function clearFilter() {
+            window.location.href = "/";
+        }
+
+        document.getElementById('ns-filter').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                applyFilter();
+            }
+        });
+
+        mermaid.initialize({
+            startOnLoad: true,
+            maxTextSize: 1000000, // Increase max text size for large graphs
+            flowchart: {
+                useMaxWidth: false, // Allow graph to exceed container width
+                htmlLabels: true
+            }
+        });
+    </script>
+</body>
+</html>

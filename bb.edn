@@ -1,0 +1,12 @@
+{:paths ["src"]
+ :deps {datalevin/datalevin {:mvn/version "0.9.27"}
+        cheshire/cheshire {:mvn/version "5.10.0"}}
+ :tasks
+ {index {:doc "Index a codebase. Usage: bb index <path-to-project>"
+         :task (apply (requiring-resolve 'code-expert.core/-main) *command-line-args*)}
+  server {:doc "Start MCP server. Usage: bb server <path-to-db>"
+          :task (apply (requiring-resolve 'code-expert.mcp/-main) *command-line-args*)}
+                     visualize {:doc "Generate Mermaid graph of the codebase. Usage: bb visualize > graph.mmd"
+                        :task (apply (requiring-resolve 'code-expert.visualize/-main) *command-line-args*)}
+             serve-ui {:doc "Serve the visualization UI. Usage: bb serve-ui"
+                       :task (apply (requiring-resolve 'code-expert.server/-main) *command-line-args*)}}}}
